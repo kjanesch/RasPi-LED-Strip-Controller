@@ -10,8 +10,16 @@ I'm also intent on setting up a UDP listener that waits for strip color frames, 
     - setting individual or multiple lights on the strip at a time
     - converions between various internal datatypes to keep the class usage simple
       - supports setting colors based on hex strings and arrays of ints
+  - the actual bit-bang routine to the Raspberry Pi's GPIOs
+
+**What's in progress:**
+  - ...testing. Still getting the Pi prepped for that.
+  - test routines to see if the classes and bit-banging work. Hardware is still pending to connect Pi and LED strip.
+    - scanner
+      - tests utils.strip.dim() by making a trail behind the light
+    - rainbow fill
+      - general test for writing out frames, as well as strip LED population
 
 **What's to do:**
-  - the actual bit-bang routine to the Raspberry Pi's GPIOs
-  - the UDP socket routine that receives commands to set colors
-  - 
+  - the UDP socket client and server to send and receive strip frames or other commands
+  
