@@ -146,6 +146,11 @@ class strip:
             else:
                 self.lights = newlights+self.lights[:-count]
     
+    #set the all the lights in the strip based on the contents of newrgbs
+    def setAll(self, newrgbs):
+        for i in range(self.length):
+            self.lights[i].set(newrgbs[i])
+        
     #index, individual indicies, or bounding range of indicies
     #value to set light(s)
     #whether or not the multiple indicies specify a range of LEDs
@@ -222,7 +227,7 @@ class color:
             self.g = bound(0, int(val), 255)
             self.b = bound(0, int(val), 255)
 
-    #rgb: white (int, no g or b), red (int and g and b), or [red, green, blue]
+    #rgb: white (int, no g or b), red (int and g and b), or list/tup as [red, green, blue]
     #g: green (if red is int)
     #b: blue  (if red is int)
     def set(self, rgb=None, g=None, b=None):
@@ -287,7 +292,7 @@ class color:
 #slide/rotate the contents of list
 #direction is direction to shift (positive=left when count is positive)
 #count is number of elements to shift
-def slide(list, direction, count):
+def slide(list, count, direction=-1):
     return list[direction*count:]+list[:direction*count]
 
 #put an upper bound on a value (0-high)
