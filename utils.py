@@ -151,7 +151,7 @@ class strip:
     #whether or not the multiple indicies specify a range of LEDs
     def set(self, index, rgb, range = 0):
         if index is strip.ALL:
-            for li in lights:
+            for li in self.lights:
                 li.set(rgb)
         
         elif range and isgroup(index):
@@ -195,7 +195,7 @@ class strip:
                        bound(0, li.b*amount, 255)])
     
     def close(self):
-        self.IO.cleanup()
+        self.bus.cleanup()
 
 class color:
     def __init__(self, rgb=None, g=None, b=None):
