@@ -42,7 +42,7 @@ def rainbowFill(strip, reverse=0):
     
     all = []
     
-    for i in len(hueramp):
+    for i in range(len(hueramp)):
         all.append([r[i], g[i], b[i]])
     
     if reverse:
