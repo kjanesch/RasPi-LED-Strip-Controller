@@ -1,4 +1,4 @@
-debug = 1
+debug = 0
 
 if debug:
     import dummyGPIO as GPIO
@@ -90,11 +90,11 @@ class strip:
     #get an element or elements from the strip.
     #same range/index behavior as set() and dim()
     #returns the color objects for those elements
-    def get(self, index, range=0):
+    def get(self, index, isrange=0):
         gets = []
         if index is strip.ALL:
             return self.lights
-        elif range and isgroup(index):
+        elif isrange and isgroup(index):
             for i in range(index[0], index[1]):
                 gets.append(self.getOne(i))
         elif isgroup(index):
@@ -159,12 +159,12 @@ class strip:
     #index, individual indicies, or bounding range of indicies
     #value to set light(s)
     #whether or not the multiple indicies specify a range of LEDs
-    def set(self, index, rgb, range = 0):
+    def set(self, index, rgb, isrange = 0):
         if index is strip.ALL:
             for li in self.lights:
                 li.set(rgb)
         
-        elif range and isgroup(index):
+        elif isrange and isgroup(index):
             for i in range(index[0], index[1]):
                 self.lights[i].set(rgb)
         
@@ -178,12 +178,12 @@ class strip:
     #index, individual indicies, or bounding range of indicies
     #percent to scale light(s)
     #whether or not the multiple indicies specify a range of LEDs
-    def dim(self, index, amount, range = 0):
+    def dim(self, index, amount, isrange = 0):
         if index is strip.ALL:
             for i in range(self.length):
                 self.dimOne(i, amount)
     
-        elif range and isgroup(index):
+        elif isrange and isgroup(index):
             for i in range(index[0], index[1]):
                 self.dimOne(i, amount)
         
