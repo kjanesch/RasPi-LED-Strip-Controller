@@ -1,4 +1,9 @@
-import RPi.GPIO as GPIO
+debug = 1
+
+if debug:
+    import dummyGPIO as GPIO
+else:
+    import RPi.GPIO as GPIO
 from random import randint
 
 class IO:

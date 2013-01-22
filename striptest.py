@@ -1,5 +1,7 @@
 import time
 import utils
+from random import randint
+
 
 RAINBOW = 'rainbow'
 
@@ -11,11 +13,24 @@ def setup():
     
     time.clock()
     
+    #test sliding the contents of the strip
     while time.clock()<2:
         strip.slide(1)
+        strip.post()
         time.sleep(1.0/16)
     
     pass
+
+def randomLights(strip, iters):
+    for n in range(iters):
+        rgb = [randint(0, 255),\
+               randint(0, 255),\
+               randint(0, 255)]
+        i = randint(0, 32)
+        
+        strip.set(i, rgb)
+        
+        time.sleep(1.0/5)
 
 
 def rainbowFill(strip, reverse=0):
@@ -37,9 +52,10 @@ def rainbowFill(strip, reverse=0):
     
     strip.setAll(all)
     
-#a sweeping-back-and-forth effect. has a trail.
-def scanner(strip, color, iters, trail=0):
+#a sweeping-back-and-forth effect. has a trail option.
+def scanner(strip, color, iters, trail=1):
     i = 0
+    previ = 0
     n = 0
     dir = 1
     color = [42, 245, 143]
@@ -48,15 +64,20 @@ def scanner(strip, color, iters, trail=0):
     strip.post()
     
     for n in range(iters):
+        
         time.sleep(1.0/32)
+        
+        if not trail:
+            strip.set(previ, 0)
+        else:
+            strip.dim(strip.ALL, 0.60)
 
+        previ = i
         i+=dir
-        strip.dim(strip.ALL, 0.60)
         
         strip.set(i, color)
         
         strip.post()
         
-        if i is len(strip) or i is -1:
+        if i is len(strip)-1 or i is 0:
             dir = -dir
-        time.sleep(1.0/30)
