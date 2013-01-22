@@ -5,6 +5,7 @@ if debug:
 else:
     import RPi.GPIO as GPIO
 from random import randint
+import gc
 
 class IO:
     def __init__(self, ins=None, outs=None):
@@ -17,6 +18,7 @@ class IO:
     def set(self, pin, hnl):
         hnl = int(hnl)
         GPIO.output(pin, (GPIO.HIGH if hnl else GPIO.LOW))
+        del hnl
         
     def get(self, pin):
         return GPIO.input(pin)
@@ -115,12 +117,15 @@ class strip:
     #spit out the strip's contents to the GPIO
     #bit-bangs on the SCK and SDA pins specified in __init__()
     def post(self):
+        gc.collect()
         for light in self.lights:         #light at index 0
             for channel in light.bin():   #red, then green, then blue
                 for bit in channel:       #MSB first
                     self.bus.set(self.SCK, 0)
                     self.bus.set(self.SDA, bit)
                     self.bus.set(self.SCK, 1)
+                    del bit
+                del channel
         self.bus.set(self.SCK, 0)
         #500us wait to post data
 
@@ -200,9 +205,9 @@ class strip:
     def dimOne(self, i, amount):
         if inrange(i, 255):
             li = self.lights[i]
-            li.set(i, [bound(0, li.r*amount, 255),\
-                       bound(0, li.g*amount, 255),\
-                       bound(0, li.b*amount, 255)])
+            li.set( [bound(0, li.r*amount, 255),\
+                     bound(0, li.g*amount, 255),\
+                     bound(0, li.b*amount, 255)])
     
     def close(self):
         self.bus.cleanup()
